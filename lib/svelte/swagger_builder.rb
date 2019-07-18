@@ -26,10 +26,9 @@ module Svelte
     def make_resource
       resource = Module.new
       paths.each do |path|
-        new_module = PathBuilder.build(path: path, module_constant: resource)
         path.operations.each do |operation|
           OperationBuilder.build(operation: operation,
-                                 module_constant: new_module,
+                                 module_constant: resource,
                                  configuration: configuration)
         end
       end

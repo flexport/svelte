@@ -103,7 +103,7 @@ The path contains two parts: `pet` and `findByStatus`. This will generate
 the following hierarchy in the new module:
 
 ```ruby
-Svelte::Service::PetStore::Pet::FindByStatus
+Svelte::Service::PetStore
 ```
 
 We can see the path has one `get` operation. A method will be generated in the
@@ -111,7 +111,7 @@ We can see the path has one `get` operation. A method will be generated in the
 have the following signature:
 
 ```ruby
-Svelte::Service::PetStore::Pet::FindByStatus.find_pets_by_status(
+Svelte::Service::PetStore.find_pets_by_status(
   request_payload,
   request_options = {}
 )
