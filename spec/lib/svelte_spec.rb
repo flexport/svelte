@@ -13,55 +13,42 @@ describe Svelte do
     end
 
     shared_examples 'builds all the things' do
-      let(:module_constants) do
-        {
-          "#{module_name}::Pet" =>
-            %w[addPet updatePet getPetById updatePetWithForm deletePet],
-          "#{module_name}::Pet::FindByStatus" =>
-            ['findPetsByStatus'],
-          "#{module_name}::Pet::FindByTags" =>
-            ['findPetsByTags'],
-          "#{module_name}::Pet::UploadImage" =>
-            ['uploadFile'],
-          "#{module_name}::Store::Inventory" =>
-            ['getInventory'],
-          "#{module_name}::Store::Order" =>
-            %w[placeOrder getOrderById deleteOrder],
-          "#{module_name}::Store::Inventory" =>
-            ['getInventory'],
-          "#{module_name}::User::CreateWithArray" =>
-            ['createUsersWithArrayInput'],
-          "#{module_name}::User::CreateWithList" =>
-            ['createUsersWithListInput'],
-          "#{module_name}::User::Login" =>
-            ['loginUser'],
-          "#{module_name}::User::Logout" =>
-            ['logoutUser'],
-          "#{module_name}::User" =>
-            %w[createUser getUserByName updateUser deleteUser]
-        }
+      let(:operations) do
+        %w[
+          addPet
+          updatePet
+          getPetById
+          updatePetWithForm
+          deletePet
+          findPetsByStatus
+          findPetsByTags
+          uploadFile
+          getInventory
+          placeOrder
+          getOrderById
+          deleteOrder
+          getInventory
+          createUsersWithArrayInput
+          createUsersWithListInput
+          loginUser
+          logoutUser
+          createUser
+          getUserByName
+          updateUser
+          deleteUser
+        ]
       end
 
-      it 'creates the correct module root inside Svelte::Service namespace' do
+      it 'creates the correct module inside Svelte::Service namespace' do
         expect(described_class::Service.const_defined?(module_name)).to eq(true)
       end
 
-      it 'creates the correct module hierarchy inside the root module' do
-        module_constants.each_key do |module_constant|
-          expect(described_class::Service.const_defined?(module_constant))
-            .to(eq(true),
-                "Expected #{described_class::Service}::#{module_constant} to exist, but it doesn't")
-        end
-      end
-
       it 'creates the operations for each module' do
-        module_constants.each do |module_constant, operations|
-          operations.each do |operation|
-            method_name = Svelte::StringManipulator.method_name_for(operation)
-            expect(described_class::Service.const_get(module_constant))
-              .to(respond_to(method_name),
-                  "Expected module to respond to :#{operation}, but it didn't")
-          end
+        operations.each do |operation|
+          method_name = Svelte::StringManipulator.method_name_for(operation)
+          expect(described_class::Service.const_get(module_name))
+            .to(respond_to(method_name),
+                "Expected module to respond to :#{operation}, but it didn't")
         end
       end
     end
