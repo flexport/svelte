@@ -11,7 +11,6 @@ require 'svelte/service'
 require 'svelte/swagger_builder'
 require 'svelte/path'
 require 'svelte/operation'
-require 'svelte/path_builder'
 require 'svelte/operation_builder'
 require 'svelte/generic_operation'
 
