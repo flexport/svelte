@@ -1,3 +1,4 @@
+touch
 # Svelte
 
 Svelte is a Swagger-to-Ruby object mapper.
