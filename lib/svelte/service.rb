@@ -35,15 +35,21 @@ module Svelte
 
       private
 
+      def reraise_get_json_error(url, error)
+        raise HTTPError.new(
+          message: "Could not get API json from #{url}",
+          parent: error
+        )
+      end
+
       def get_json(url:, headers:)
         connection = Faraday.new(url: url)
         headers.each { |key, value| connection.headers[key] = value }
         connection.get.body
+      rescue Faraday::ConnectionFailed => e
+        reraise_get_json_error(url, e)
       rescue Faraday::ClientError => e
-        raise HTTPError.new(
-          message: "Could not get API json from #{url}",
-          parent: e
-        )
+        reraise_get_json_error(url, e)
       end
 
       def build_headers(options:)

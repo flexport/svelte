@@ -24,6 +24,8 @@ module Svelte
         connection.send verb, url, params, headers do |request|
           request.options.timeout = options[:timeout] if options[:timeout]
         end
+      rescue Faraday::ConnectionFailed => e
+        raise HTTPError.new(parent: e)
       rescue Faraday::TimeoutError => e
         raise HTTPError.new(parent: e)
       rescue Faraday::ResourceNotFound => e
